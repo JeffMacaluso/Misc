@@ -73,7 +73,7 @@ dfCloud = pd.read_csv(hourlyPath+'hly-cldh-normal.txt',
 dfCloud.replace('-9999', np.NaN, inplace=True)
 
 # Extracting to avoid calculations
-cloud_order = dfTemp[['Station', 'Month', 'Day']]
+cloud_order = dfCloud[['Station', 'Month', 'Day']]
 
 # Removing flags and converting to the proper format
 formatted_cloud = dfCloud.replace('[\D]', '', regex=True).astype(float) / 10
