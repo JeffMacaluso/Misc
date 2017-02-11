@@ -9,16 +9,15 @@ dfStation = pd.read_table('~/Data/stationary/allstations.txt', header=None)
 dfStation = dfStation[0].apply(lambda x: pd.Series(re.sub(' +', ' ', x).split()[:3]))
 dfStation.columns = ['Station', 'Latitude', 'Longitude']
 
-# Set path to hourly directory to make reading hourly files easier
+# Set path to directories to shorten code for reading data
 hourlyPath = '~/Data/product/hourly/'
+monthlyPrecipPath = '~/Data/products/precipitation/'
+monthlyTempPath = '~/Data/products/temperature/'
 
-# Set path to hourly directory to make reading hourly files easier
-hourlyPath = 'E:/weather/normals/1981-2010/products/hourly/'
+
 
 def read_hourly(col_name, file_name, divisor):
-    """
-    Creates a formatted data frame from the weather hourly normals
-    """
+    """Creates a formatted data frame from the hourly weather normals"""
 
     # Formats the column names including a prefix for the weather type
     station_columns = ['Station', 'Month', 'Day']
@@ -64,6 +63,50 @@ dfCoolHrs = read_hourly('CoolHr', 'hly-cldh-normal.txt', 10)
 dfHtHrs = read_hourly('HtHr', 'hly-htdh-normal.txt', 10)
 
 
-# Combining data frames together
-dfWeather = pd.merge(dfStation, dfTmp).merge(dfDewp).merge(dfCloud).merge(dfHtIdx) \
+# Combining hourly data frames
+dfHourlyWeather = pd.merge(dfStation, dfTmp).merge(dfDewp).merge(dfCloud).merge(dfHtIdx) \
               .merge(dfCoolHrs).merge(dfHtHrs)
+
+
+def read_monthly(col_name, file_name, path, divisor):
+    """Creates a formatted data frame from the monthly weather normals"""
+
+    # Formats the column names including a prefix for the weather type
+    station_columns = ['Station']
+    column_names = ([col_name+str(x) for x in range(1, 13)])
+    column_names = station_columns+column_names
+
+    df_monthly = pd.read_csv(path+file_name, 
+                     header=None, delim_whitespace=True,
+                     names = column_names)
+
+    # Sets missing values to NaN
+    df_monthly.replace('-9999', np.NaN, inplace=True)
+
+    # Split - Extracting to avoid calculations
+    column_order = df_monthly[['Station']]
+
+    # Apply - Removing flags and converting to the proper format
+    formatted_values = df_monthly.replace('[\D]', '', regex=True).astype(float) / divisor
+    formatted_values = formatted_values.drop(['Station'], axis=1)
+
+    # Combine
+    df_monthly = pd.merge(column_order, formatted_values, left_index=True, right_index=True)
+
+    return(df_monthly)
+
+# Monthly Precipitation
+dfPrecip = read_monthly('Precip', 'mly-prcp-normal.txt', monthlyPrecipPath, 100)
+
+# Monthly Minimum Temperature
+dfMthlyTmpMin = read_monthly('MthlyTmpMin', 'mly-tmin-normal.txt', monthlyTempPath, 10)
+
+# Monthly Maximum Temperature
+dfMthlyTmpMax = read_monthly('MthlyTmpMax', 'mly-tmax-normal.txt', monthlyTempPath, 10)
+
+# Monthly Average Temperature
+dfMthlyTmpAvg = read_monthly('MthlyTmpAvg', 'mly-tavg-normal.txt', monthlyTempPath, 10)
+
+
+# Combining monthly data frames
+dfMonthlyWeather = pd.merge(dfStation, dfMthlyTmpMin).merge(dfMthlyTmpMax).merge(dfMthlyTmpAvg)
