@@ -22,7 +22,7 @@ tmp_columns = station_columns+tmp_columns
 # Temperature normals
 dfTmp = pd.read_csv(hourlyPath+'hly-temp-normal.txt', 
                      header=None, delim_whitespace=True,
-                     names = temp_columns)
+                     names = tmp_columns)
 
 # Sets missing values to NaN
 dfTmp.replace('-9999', np.NaN, inplace=True)
