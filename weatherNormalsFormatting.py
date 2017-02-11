@@ -12,75 +12,58 @@ dfStation.columns = ['Station', 'Latitude', 'Longitude']
 # Set path to hourly directory to make reading hourly files easier
 hourlyPath = '~/Data/product/hourly/'
 
+# Set path to hourly directory to make reading hourly files easier
+hourlyPath = 'E:/weather/normals/1981-2010/products/hourly/'
 
-# Hourly Temperature Normals
-# Formats the column names including a prefix for the weather type
-station_columns = ['Station', 'Month', 'Day']
-tmp_columns = (['Tmp'+str(x) for x in range(1, 25)])
-tmp_columns = station_columns+tmp_columns
+def read_hourly(col_name, file_name, divisor):
+    """
+    Creates a formatted data frame from the weather hourly normals
+    """
 
-# Temperature normals
-dfTmp = pd.read_csv(hourlyPath+'hly-temp-normal.txt', 
+    # Formats the column names including a prefix for the weather type
+    station_columns = ['Station', 'Month', 'Day']
+    column_names = ([col_name+str(x) for x in range(1, 25)])
+    column_names = station_columns+column_names
+
+    df_hourly = pd.read_csv(hourlyPath+file_name, 
                      header=None, delim_whitespace=True,
-                     names = tmp_columns)
+                     names = column_names)
 
-# Sets missing values to NaN
-dfTmp.replace('-9999', np.NaN, inplace=True)
+    # Sets missing values to NaN
+    df_hourly.replace('-9999', np.NaN, inplace=True)
 
-# Extracting to avoid calculations
-tmp_order = dfTmp[['Station', 'Month', 'Day']]
+    # Split - Extracting to avoid calculations
+    column_order = df_hourly[['Station', 'Month', 'Day']]
 
-# Removing flags and converting to the proper format
-formatted_tmp = dfTmp.replace('[\D]', '', regex=True).astype(float) / 10
-formatted_tmp = formatted_tmp.drop(['Station', 'Month', 'Day'], axis=1)
+    # Apply - Removing flags and converting to the proper format
+    formatted_values = df_hourly.replace('[\D]', '', regex=True).astype(float) / divisor
+    formatted_values = formatted_values.drop(['Station', 'Month', 'Day'], axis=1)
 
-dfTmp = pd.merge(tmp_order, formatted_tmp, left_index=True, right_index=True)
+    # Combine
+    df_hourly = pd.merge(column_order, formatted_values, left_index=True, right_index=True)
+
+    return(df_hourly)
 
 
-# Hourly Dewpoint Normals
-# Formats the column names including a prefix for the weather type
-station_columns = ['Station', 'Month', 'Day']
-dew_columns = (['Dew'+str(x) for x in range(1, 25)])
-dew_columns = station_columns+dew_columns
-dfDewp = pd.read_csv(hourlyPath+'hly-dewp-normal.txt', 
-                     header=None, delim_whitespace=True,
-                     names = dew_columns)
+# Hourly Temperature
+dfTmp = read_hourly('Tmp', 'hly-temp-normal.txt', 10)
 
-# Sets missing values to NaN
-dfDewp.replace('-9999', np.NaN, inplace=True)
+# Hourly Dewpoint
+dfDewp = read_hourly('Dew', 'hly-dewp-normal.txt', 10)
 
-# Extracting to avoid calculations
-dewp_order = dfDewp[['Station', 'Month', 'Day']]
-
-# Removing flags and converting to the proper format
-formatted_dewp = dfDewp.replace('[\D]', '', regex=True).astype(float) / 10
-formatted_dewp = formatted_dewp.drop(['Station', 'Month', 'Day'], axis=1)
-
-dfDewp = pd.merge(dewp_order, formatted_dewp, left_index=True, right_index=True)
-
+# Hourly Cloud Coverage - Specifically Overcast %
+dfCloud = read_hourly('Cloud', 'hly-clod-pctovc.txt', 10)
 
 # Hourly Cloud Coverage
-# Formats the column names including a prefix for the weather type
-station_columns = ['Station', 'Month', 'Day']
-cloud_columns = (['Cloud'+str(x) for x in range(1, 25)])
-cloud_columns = station_columns+cloud_columns
+dfHtIdx = read_hourly('HtIdx', 'hly-hidx-normal.txt', 10)
 
-dfCloud = pd.read_csv(hourlyPath+'hly-cldh-normal.txt', 
-                     header=None, delim_whitespace=True,
-                     names = cloud_columns)
+# Hourly Cloud Coverage
+dfCoolHrs = read_hourly('CoolHr', 'hly-cldh-normal.txt', 10)
 
-# Sets missing values to NaN
-dfCloud.replace('-9999', np.NaN, inplace=True)
-
-# Extracting to avoid calculations
-cloud_order = dfCloud[['Station', 'Month', 'Day']]
-
-# Removing flags and converting to the proper format
-formatted_cloud = dfCloud.replace('[\D]', '', regex=True).astype(float) / 10
-formatted_cloud = formatted_cloud.drop(['Station', 'Month', 'Day'], axis=1)
-
-dfCloud = pd.merge(cloud_order, formatted_cloud, left_index=True, right_index=True)
+# Hourly Cloud Coverage
+dfHtHrs = read_hourly('HtHr', 'hly-htdh-normal.txt', 10)
 
 
 # Combining data frames together
-dfWeather = pd.merge(dfStation, dfTemp).merge(dfDewp).merge(dfCloud)
+dfWeather = pd.merge(dfStation, dfTmp).merge(dfDewp).merge(dfCloud).merge(dfHtIdx) \
+              .merge(dfCoolHrs).merge(dfHtHrs)
