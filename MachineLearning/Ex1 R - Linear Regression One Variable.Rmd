@@ -1,0 +1,49 @@
+---
+title: "Ex1 R - Linear Regression One Variable"
+output: html_notebook
+---
+
+```{r}
+library(readr)
+library(ggplot2)
+library(dplyr)
+```
+
+```{r}
+dfRest <- read_csv("~/Projects/Machine Learning/machine-learning-ex1/ex1/ex1data1.txt",
+                   col_names = FALSE,
+                   col_types = 'dd')
+
+colnames(dfRest) <- c('Population', 'Profit')
+```
+
+
+```{r}
+ggplot(dfRest) + 
+  geom_point(aes(x=Population, y=Profit), alpha=0.5) +
+  ggtitle("Restaurant Profits by Population")
+```
+
+```{r}
+summary(lm(Profit ~ Population, data=dfRest))
+```
+
+```{r}
+dfHouse <- read_csv("~/Projects/Machine Learning/machine-learning-ex1/ex1/ex1data2.txt",
+               col_names = FALSE,
+               col_types = 'ddd')
+
+colnames(dfHouse) <- c('Size', 'Bedrooms', 'Price')
+```
+
+```{r}
+ggplot(dfHouse) +
+  geom_point(aes(x=Size, y=Price,
+                 alpha=Bedrooms, size=Bedrooms)) +
+  ggtitle("House Price by Size")
+```
+
+```{r}
+summary(lm(Price ~ Size + Bedrooms, data=dfHouse))
+```
+
