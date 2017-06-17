@@ -5,7 +5,7 @@ For other files and projects that don't belong elsewhere
 
 ### Folders
 
-- **MachineLearningMOOC:**  My solutions (in both Python and R) to the exercises for Andrew Ng's [Machine Learning](https://www.coursera.org/learn/machine-learning) course on Coursera
+- **MachineLearningMOOC:**  My solutions (in Python, R, and Julia) to the exercises for Andrew Ng's [Machine Learning](https://www.coursera.org/learn/machine-learning) course on Coursera
 
 
 ### Files
