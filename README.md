@@ -18,6 +18,6 @@ For other files and projects that don't belong elsewhere
 
 ### Files
 
-- **[soilDescriptionCombiner.py](https://github.com/JeffMacaluso/Misc/blob/master/soilDescriptionCombiner.py):** Combines the contents of multiple files with the same name contained within subdirectories
+- **[soilDescriptionCombiner.py](https://github.com/JeffMacaluso/Misc/blob/master/soilDescriptionCombiner.py):** A data processing script that combines the contents of multiple files with the same name contained within subdirectories.  This was created for use on the [SSURGO](https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/survey/?cid=nrcs142p2_053627) database, but can be expanded for other purposes.
 
-- **[weatherNormalsFormatting.py](https://github.com/JeffMacaluso/Misc/blob/master/weatherNormalsFormatting.py):** Formats raw text files from weather normals into data frames and combines multiple attributes
+- **[weatherNormalsFormatting.py](https://github.com/JeffMacaluso/Misc/blob/master/weatherNormalsFormatting.py):** A data processing script that formats raw text files from weather normals into data frames and combines multiple attributes.  This was created for use on a dataset of weather normals provided by [NOAA](http://www.noaa.gov/).
