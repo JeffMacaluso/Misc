@@ -21,7 +21,7 @@ For other files and projects that don't belong elsewhere
 
 ### Files
 
-- **[Cognitive Services API Examples.ipynb](https://github.com/JeffMacaluso/Misc/blob/master/Cognitive%20Services%20API%20Examples.ipynb):** A jupyter notebook containing examples of the [Microsoft Cognitive Service APIs](https://azure.microsoft.com/en-us/services/cognitive-services/) in Python.
+- **[Cognitive Services API Examples.ipynb](https://nbviewer.jupyter.org/github/JeffMacaluso/Misc/blob/master/Cognitive%20Services%20API%20Examples.ipynb):** A jupyter notebook containing examples of the [Microsoft Cognitive Service APIs](https://azure.microsoft.com/en-us/services/cognitive-services/) in Python.
 
 - **[soilDescriptionCombiner.py](https://github.com/JeffMacaluso/Misc/blob/master/soilDescriptionCombiner.py):** A data processing script that combines the contents of multiple files with the same name contained within subdirectories.  This was created for use on the [SSURGO](https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/survey/?cid=nrcs142p2_053627) database, but can be expanded for other purposes.
 
