@@ -23,6 +23,8 @@ For other files and projects that don't belong elsewhere
 
 - **[Cognitive Services API Examples.ipynb](https://nbviewer.jupyter.org/github/JeffMacaluso/Misc/blob/master/Cognitive%20Services%20API%20Examples.ipynb):** A Jupyter notebook containing examples of the [Microsoft Cognitive Service APIs](https://azure.microsoft.com/en-us/services/cognitive-services/) in Python.
 
+- **[R Crash Course.rmd](https://github.com/JeffMacaluso/Misc/blob/master/R%20Crash%20Course.Rmd):** An R markdown file containing a basic overview on common R functionality for beginners.
+
 - **[soilDescriptionCombiner.py](https://github.com/JeffMacaluso/Misc/blob/master/soilDescriptionCombiner.py):** A data processing script that combines the contents of multiple files with the same name contained within subdirectories.  This was created for use on the [SSURGO](https://www.nrcs.usda.gov/wps/portal/nrcs/detail/soils/survey/?cid=nrcs142p2_053627) database, but can be expanded for other purposes.
 
 - **[weatherNormalsFormatting.py](https://github.com/JeffMacaluso/Misc/blob/master/weatherNormalsFormatting.py):** A data processing script that formats raw text files from weather normals into data frames and combines multiple attributes.  This was created for use on a dataset of weather normals provided by [NOAA](http://www.noaa.gov/).
