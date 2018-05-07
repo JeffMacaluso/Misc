@@ -6,7 +6,7 @@ output: html_notebook
 
 # R Notebook Basics
 
-Notebooks in R studio use markdown, so code had to be specified. Code is wrapped in something called a "chunk". Additionally, we can "knit" these notebooks into HTML, PDFs, or Word documents for sharing. Press *Preview* above or press *Ctrl + Shift + K* to display the notebook with all currently rendered outputs. This doesn't run the entire notebook, so you have to specifically knit them to run all code in the notebook.
+Notebooks in R Studio use markdown, so code had to be specified. Code is wrapped in something called a "chunk". Additionally, we can "knit" these notebooks into HTML, PDFs, or Word documents for sharing. Press *Preview* above or press *Ctrl + Shift + K* to display the notebook with all currently rendered outputs. This doesn't run the entire notebook, so you have to specifically knit them to run all code in the notebook.
 
 Below is a chunk. You can execute the code in it by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl + Shift + Enter*. You can run individual lines with *Ctrl + Enter*. You can run all chunks in the notebook with *Ctrl + Alt + R*. Outputs from it will appear below the chunk.
 
@@ -39,6 +39,10 @@ Lastly, R code is executed interactively. Variables created, modified, or delete
 R is an extremley popular open source statistical programming language. Along with Python, it is one of the most popular programming languages used by data scientists, analysts, and statisticians. While there is a strong R vs. Python debate, this notebook is only to teach people the basics of R and a couple of the popular libraries.
 
 R is also a statistical programming language written by statisticians, so it behaves and operates a little differently than other programming languages. For example, it is one indexed, assignments are done through *<-* instead of *=*, error messages may not always be very descriptive, and it is common for newer versions of packages to break functionality in older code. These differences result in strong opinions within the community. However, it is a full-fledged Turing complete programming language that is being used in both research and in production in enterprises world-wide.
+
+[CRAN (the Comprehensive R Archive Network)](https://cran.r-project.org/) is the primary repository for both R and its packages. Microsoft also has [MRAN](https://mran.microsoft.com/) which includes daily snapshots of CRAN along with two Microsoft R libraries built for distributed processing on data sets that don't fit in memory, [RevoScaleR](https://docs.microsoft.com/en-us/machine-learning-server/r-reference/revoscaler/revoscaler) and [dplyrXdf](http://blog.revolutionanalytics.com/2015/10/the-dplyrxdf-package.html).
+
+R Studio is the primary IDE most people use for R. It includes a plot and documentation viewer, variable/environment explorer, a notebook/R markdown viewer, a data import wizard, GitHub integration, and several other useful tools.
 
 ## Basic Setup
 
