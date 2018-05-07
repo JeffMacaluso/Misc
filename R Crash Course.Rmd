@@ -1,0 +1,246 @@
+---
+title: "R Crash Course"
+author: "Jeff Macaluso"
+output: html_notebook
+---
+
+# R Notebook Basics
+
+Notebooks in R studio use markdown, so code had to be specified. Code is wrapped in something called a "chunk". Additionally, we can "knit" these notebooks into HTML, PDFs, or Word documents for sharing. Press *Preview* above or press *Ctrl + Shift + K* to display the notebook with all currently rendered outputs. This doesn't run the entire notebook, so you have to specifically knit them to run all code in the notebook.
+
+Below is a chunk. You can execute the code in it by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl + Shift + Enter*. You can run individual lines with *Ctrl + Enter*. You can run all chunks in the notebook with *Ctrl + Alt + R*. Outputs from it will appear below the chunk.
+
+```{r}
+print('This is a chunk')
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl + Alt + I*.
+
+If you need documentation, add *?* in front of a function. RStudio has a panel where this will display.
+
+```{r}
+?c()
+```
+
+We can modify properties of the chunk with the gear icon in the top right. For example, the below chunk has been modified to run but not display when knitting or previewing the notebook.
+
+```{r include=FALSE}
+# Installs libraries if they aren't already installed
+list.of.packages <- c("ggplot2", "dplyr")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+```
+
+
+Lastly, R code is executed interactively. Variables created, modified, or deleted are persisted in the session.
+
+# R Basics
+
+R is an extremley popular open source statistical programming language. Along with Python, it is one of the most popular programming languages used by data scientists, analysts, and statisticians. While there is a strong R vs. Python debate, this notebook is only to teach people the basics of R and a couple of the popular libraries.
+
+R is also a statistical programming language written by statisticians, so it behaves and operates a little differently than other programming languages. For example, it is one indexed, assignments are done through *<-* instead of *=*, error messages may not always be very descriptive, and it is common for newer versions of packages to break functionality in older code. These differences result in strong opinions within the community. However, it is a full-fledged Turing complete programming language that is being used in both research and in production in enterprises world-wide.
+
+## Basic Setup
+
+Here, we'll import a couple of libraries, load in a dataset as a dataframe, and display the first few rows.
+
+Dataframes are the fundamental data structure for R. They're basically just tables. The only difference is that rows must have an index and columns must have some kind of identifier (such as a column name) and a standard data type.
+
+*variable* <- *value* is the standard assignment operator. While = also works, it can cause issues in a few cases and is generally not used. A useful shortcut to avoid typing <- is *Alt + -*
+
+Here, we'll load in the [mtcars dataset](https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/mtcars.html), which is a small demonstration dataset of car statistics from the 1974 issue of the *Motor Trend* magazine.
+
+```{r}
+# Importing a few libraries
+library(dplyr)  # Extremely popular data manipulation library
+library(ggplot2)  # Extremely popular data visualization library
+
+# Loading in a dataset and assigning it to a dataframe
+data(mtcars)  # Small dataset included with R
+df <- mtcars  # Assigning it to a dataframe named "df", creating a copy
+rm(mtcars)  # Removing the mtcars dataframe from the session since it was duplicated
+
+# Displaying the top 6 rows of the dataframe
+head(df)
+```
+
+At the moment, all of our columns have the numeric/double datatype. However, a fair amount of them are categorical. We'll have to change the datatype of these in order to have them handled correctly in statistical procedures, modeling, and plotting.
+
+```{r}
+# Updating the data types of categorical columns to "factors"
+# Note: There are more efficient ways of doing this
+df$cyl <- as.factor(df$cyl)
+df$gear <- as.factor(df$gear)
+df$carb <- as.factor(df$carb)
+df$vs <- as.factor(df$vs)
+df$am <- as.factor(df$am)
+```
+
+
+## Base R Selection, Slicing and Manipulation
+
+Columns can be accessed by name with the *$* symbol following the dataframe:
+
+```{r}
+# Creating a new column with the ratio of horsepower:displacement
+df$PowerEfficieny <- df$hp / df$disp
+```
+
+Columns and/or rows can also be accessed by their index. Note that R is a 1-indexed language, unlike most other programming languages. If we want all elements of a specific index, just leave that part blank.
+
+```{r}
+# Accessing all rows of the 5th column
+df[, 5]
+```
+
+Similarly, you can use column or row names.
+
+Additionally, we can create lists with *c()*
+
+```{r}
+# Creating a list of columns to select
+list_of_cols_to_select <- c('mpg', 'hp')
+
+# Using the list for slicing
+df['Ferrari Dino', list_of_cols_to_select]
+```
+
+
+You can append rows or columns with rbind (row bind) or cbind (column bind)
+
+```{r}
+# Appending the 7th row to the 3rd row
+rbind(df[3, ], df[7, ])
+```
+
+> To-Do: Add loops, apply, sequences, object characteristics, and functinos
+
+## Base R Plotting
+
+While the plots aren't pretty, you can create basic plots with the *plot()* or *hist()* command
+
+```{r}
+# Plotting a scatter plot of the mpg and horsepower
+plot(df$mpg, df$hp)
+```
+
+```{r}
+# Plotting a histogram of the mpg
+hist(df$mpg)
+```
+
+## Statistical methods, modeling, and machine learning
+
+Base R includes popular statistical methods, but some others are implemented through libraries. For example, [caret](http://topepo.github.io/caret/index.html) is a popular library for **c**lassification **a**nd **re**gression **t**raining, [randomForest](https://cran.r-project.org/web/packages/randomForest/) for random forests, etc.
+
+Here is an example of a [t-test](https://en.wikipedia.org/wiki/Student%27s_t-test) to see if there is a statistically significant difference in the means between two groups. Most people interpret the results as there being a statistically significant difference between the two groups if the p-value is below 0.05:
+
+```{r}
+# Performing a t-test between displacement and horsepower
+t.test(df$disp, df$hp, data=df)
+```
+
+We can also run [linear regression](https://en.wikipedia.org/wiki/Linear_regression) models with the *lm()* function
+
+```{r}
+# Assigning the linear regression results to the variable fit
+fit <- lm(mpg ~ ., data=df)
+
+# Viewing a summary of the results
+summary(fit)
+```
+
+Here we have all kinds of summary statistics for our linear model. At a high level, we can interpret this as overall being valid results due to our p-value in the bottom right being at a statistically significant (see the image below for a commentary from XKCD on what is considered statistically significant p-value), and we can see our coefficients for determining mpg along with our p-values for each coefficient. In this case, we can be very confident that each increase in one horsepower results in a reduction of at least 0.10171 mpg, and we can be fairly confident that an increase in weight by one decreases the mpg by at least 4.48349.
+
+![https://xkcd.com/1478/](https://imgs.xkcd.com/comics/p_values.png)
+
+# Tidyverse basics
+
+The [Tidyverse](https://www.tidyverse.org/) are a collection of highly popular packages for R primarily created by [Hadley Wickham](https://en.wikipedia.org/wiki/Hadley_Wickham), the chief scientist at R Studio and professor of statistics at Rice University. The name comes from the packages being geared towards [Tidy Data](http://vita.had.co.nz/papers/tidy-data.html), which is a philosophy from Hadley where prepared datasets should have the following conditions:
+
+- Each variable is a column
+- Each observation is a row
+- Each type of observational unit is a table
+
+![Example of a tidy dataset](http://r4ds.had.co.nz/images/tidy-1.png)
+
+
+Tidy data has the advantage of being easy to work with. This is typically the format a dataset needs to be in before building a machine learning model on it, and it's extremely easy to do any kind of data analysis or visualization on a tidy dataset. Hadley even created a package for converting a non-tidy dataset into one, [tidyr](https://cran.r-project.org/web/packages/tidyr/index.html).
+
+
+## Data manipulation: dplyr
+
+Dplyr is a data scientist's best friend. This makes data manipulation in R significantly easier than base R.
+
+Most commands in dplyr use fairly simple and intuitive language. [Here is a dplyr cheatsheet](https://www.rstudio.org/links/data_transformation_cheat_sheet) showing most commands, and you can also access this under the Help > Cheatsheets menu from R Studio.
+
+Here's a basic example of one dplyr command:
+
+```{r}
+# Selecting the mpg column from the dataframe
+select(df, mpg)
+```
+
+One of the other extremely useful parts of dplyr is the pipe operator, *%>%*, that originally comes from the [magrittr](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html) library, which is another library in the tidyverse.
+
+This allows you to chain operations together by feeding the output of one command as the input to the next command. It allows us to easily package up transformations for specific usecases in a readable format.
+
+Note: A shortcut for inserting the pipe is *Alt + Shift + M*
+
+```{r}
+# Performing a linear regression on a subselection of the data and a new feature
+df %>%  # Using the df dataframe
+  filter(am == 1) %>%  # Only selecting cars with a manual transmission
+  mutate(PowerEfficieny = hp / disp) %>%  # Creating a new column for power efficiency
+  select(mpg, PowerEfficieny, wt, cyl) %>%  # Selecting a few columns
+  lm(mpg ~ ., data=.) %>%  # Performing linear regression. The dot under data is the data from the previous step
+  summary()  # Showing the summary
+```
+
+## Data visualization: ggplot2
+
+Ggplot2 is the best data visualization library for R that is highly coveted by many Python users. It is based on the [Grammar of Graphics](https://www.amazon.com/Grammar-Graphics-Statistics-Computing/dp/0387245448) philosophy which is focused around adding components like lego blocks and 
+
+The syntax is a little strange at first and takes a bit of practice to get the hang of. We start with a *ggplot()* object, which is typically our data itself. Then, we add the additional components that we want to view. Typically this is a geom object, and we specify which columns we want under the *aes()* aesthetics arugment. These typically have additional arguments for increasing the dimensionality of the plot, which we will explore.
+
+We'll start with re-creating the initial plot that we did with base R:
+
+```{r}
+# Plotting a scatterplot of horsepower and mpg
+ggplot(df) +  # ggplot object of the data
+  geom_point(aes(x=mpg, y=hp))  # Scatterplot of mpg and horsepower
+```
+
+We can add additional components like so:
+
+```{r}
+# Plotting a 6 dimensional scatterplot
+ggplot(df) +  # 
+  geom_point(aes(x=mpg, y=hp,
+                 size=wt,  # Sizing the points by weight
+                 color=cyl,  # Coloring the plots by displacement
+                 shape=am)) +  # Shaping by if it's an automatic or a manual transmission
+  geom_smooth(aes(x=mpg, y=hp), method='loess') +  # Local regression line showing trends and confidence interval
+  ggtitle('Miles per gallon by Horsepower')  # Adding a title
+```
+
+We can even combine these with dplyr pipe operations:
+
+```{r}
+# Plotting the density of mpg between transmission types for cars with 6 and 8 cylinders
+df %>%  # Using the df dataframe
+  filter(cyl %in% c("6", "8")) %>%  # Filtering to cylinders of 6 and 8
+  select(mpg, am) %>%   # Selecting only mpg and transmission
+  ggplot() +  # Creating the ggplot object
+    geom_density(aes(x=mpg, fill=am),  # Getting density for mpg and coloring by transmission
+                 alpha=0.5, color=NA) +  # Altering the transparency of the color and removing the outline
+    ggtitle('Density of mpg between transmission types for 6 and 8 cylinder cars')  # Adding a title
+```
+
+
+# Extra resources
+
+- [R for Data Science](http://r4ds.had.co.nz/): Hadley Wickham's book over basic R and using the tidyverse for common data science scenarios. The entire book is available online for free in the link, and is one of the best resources for using R.
+- [A Beginner's Guide to R](https://cran.r-project.org/doc/contrib/Paradis-rdebuts_en.pdf): An internet book describing most of the basic functionality for R
+- [R Programming Coursera Course](https://www.coursera.org/learn/r-programming): A series of videos on Coursera about programming in R.
+- [Swirl](http://swirlstats.com/): An R library that teaches you R within R itself.
