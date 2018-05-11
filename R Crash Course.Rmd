@@ -117,7 +117,53 @@ You can append rows or columns with rbind (row bind) or cbind (column bind)
 rbind(df[3, ], df[7, ])
 ```
 
-> To-Do: Add loops, apply, sequences, object characteristics, and functinos
+
+## Other Base R Programming 
+
+> To-Do: Add apply, object characteristics, and functions
+
+Here are a few other standard programming tools
+
+#### Loops
+
+Loops are ridiculed for not being very efficient, but there are some cases where they are the only option
+
+```{r}
+# Creating a simple sequence to loop through
+simple_sequence <- 1:5
+
+# Looping through the sequence and printing the values
+for (x in simple_sequence) {
+  print(x)
+}
+```
+
+We can also update values of a list in a loop. Here we'll update the individual indexes. 
+
+I'm going to make this even more complicated and update the items if they're an even number
+
+```{r}
+# Creating a sequence with gaps in between each item
+simple_sequence <- seq(from = 1, to = 10, by = 3)
+print(simple_sequence)
+
+# Looping through by index and updating the values if the value is an even number
+for (i in seq_along(simple_sequence)) {  # seq_along() loops by index
+  
+  # Checking if the value is an even number
+  if ((simple_sequence[i] %% 2) == 0) {
+    
+    # Updating if it is an even number
+    simple_sequence[[i]] <- simple_sequence[i]*2
+  }
+}
+
+print(simple_sequence)
+```
+
+#### Apply
+
+
 
 ## Base R Plotting
 
