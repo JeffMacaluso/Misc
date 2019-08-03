@@ -5,8 +5,6 @@ For other files and projects that don't belong elsewhere
 
 ### Folders
 
-- **[FlaskTutorial](https://github.com/JeffMacaluso/Misc/tree/master/FlaskTutorial/flaskr)**: The [official Flask tutorial](http://flask.pocoo.org/docs/0.12/tutorial/) with my own comments inserted in the code.
-
 - **[MachineLearningMOOC](https://github.com/JeffMacaluso/Misc/tree/master/MachineLearningMOOC):**  My solutions (in Python, R, and Julia) to the exercises for Andrew Ng's [Machine Learning](https://www.coursera.org/learn/machine-learning) course on Coursera
     - **Note:** The remainder of Julia exercises will be added after finishing the course in Python and R
     - **[Ex1.](https://github.com/JeffMacaluso/Misc/blob/master/MachineLearningMOOC/Ex1.pdf)** Linear Regression: [Python](http://nbviewer.jupyter.org/github/JeffMacaluso/Misc/blob/master/MachineLearningMOOC/Ex1%20Python%20-%20Linear%20Regression.ipynb) | [R](http://nbviewer.jupyter.org/github/JeffMacaluso/Misc/blob/master/MachineLearningMOOC/Ex1%20R%20-%20Linear%20Regression.ipynb) | [Julia](http://nbviewer.jupyter.org/github/JeffMacaluso/Misc/blob/master/MachineLearningMOOC/Ex1%20Julia%20-%20Linear%20Regression.ipynb)
